@@ -10,6 +10,12 @@ pygame.init()
 mixer.init()
 x = 0
 
+def quitmain():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            running = False
+
 pressed = False
 directory = sys.path[0]
 hitsound = os.path.join(directory, "../Assets/hit.mp3")
@@ -69,10 +75,7 @@ def quit():
 
 
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            running = False
+    quitmain()
     pygame.display.update()
     screen.fill((0, 0, 0))
     screen.blit(quitbutton, (1699, 0))
