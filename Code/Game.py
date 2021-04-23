@@ -14,9 +14,11 @@ x = 0
 
 
 def quitmain():
+    global running
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            exit()
             running = False
 
 
@@ -61,21 +63,30 @@ running = True
 color = (255, 0, 0)
 Rectplace = pygame.image.load(backgroud)
 quitbutton = pygame.image.load(quitbutton)
-quitbox = pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(220, 100, 220, 100))
+click = pygame.mouse.get_pressed()
+
+
+async def objects():
+    global quitbox
+    global hitbox
+    screen.blit(Rectplace, (240, 0))
+    quitbox = pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(1699, 0, 220, 100))
+    screen.blit(quitbutton, (1699, 0))
+    show_score(textX, testY)
+    hitbox = pygame.draw.circle(screen, (0, 0, 0), (targetX + 32, targetY + 32), 32, 1)
+    screen.blit(cursor, (pygame.mouse.get_pos()))
 
 
 def quit():
+    global quitbox
     global pressed
     global running
+    global click
     pos = pygame.mouse.get_pos()
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z or event.key == pygame.K_x:
-                if hitbox.collidepoint(pos):
-                    pressed = True
-    if quitbox.collidepoint(pos) and pressed == True:
-        pressed = False
-        running = False
+    if pygame.mouse.get_pressed()[0] and quitbox.collidepoint(pygame.mouse.get_pos()):
+        pygame.display.quit()
+        exit()
+
 
 async def randomise_target():
     global targetX
@@ -83,19 +94,12 @@ async def randomise_target():
     targetX = random.randint(250, 1616 - 10)
     targetY = random.randint(10, 1080 - 74)
 
+
 async def play_hitsound():
     hit.play()
     time.sleep(0.05)
     hit.stop()
 
-
-
-async def objects():
-    global hitbox
-    screen.blit(Rectplace, (240, 0))
-    show_score(textX, testY)
-    hitbox = pygame.draw.circle(screen, (0, 0, 0), (targetX + 32, targetY + 32), 32, 1)
-    screen.blit(cursor, (pygame.mouse.get_pos()))
 
 async def target_click(pos):
     global click
@@ -113,14 +117,21 @@ async def target_click(pos):
             score_value = score_value + 1
             await randomise_target()
             await play_hitsound()
+
+
 async def init_display():
     screen.fill((0, 0, 0))
-    screen.blit(quitbutton, (1699, 0))
 
-#clock = pygame.time.Clock()
+fps = 300
+clock = pygame.time.Clock()
 while running:
+    clock.tick(fps)
     asyncio.run(init_display())
     asyncio.run(objects())
+    quitmain()
+    quit()
     asyncio.run(target_click(pygame.mouse.get_pos()))
     player(targetX, targetY)
     pygame.display.flip()
+pygame.QUIT()
+exit()
