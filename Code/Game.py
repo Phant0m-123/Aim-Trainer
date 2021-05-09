@@ -1,18 +1,22 @@
+import asyncio
 import os
 import random
 import sys
 import time
+from functools import cache
+import keyboard
 
 import pygame
 from pygame import mixer
-
-import asyncio
 
 pygame.init()
 mixer.init()
 x = 0
 
 
+# pygame.event.set_allowed([QUIT,KEYDOWN,KEYUP,])
+
+@cache
 def quitmain():
     global running
     for event in pygame.event.get():
@@ -61,8 +65,8 @@ screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("Aim Trainer")
 running = True
 color = (255, 0, 0)
-Rectplace = pygame.image.load(backgroud)
-quitbutton = pygame.image.load(quitbutton)
+Rectplace = pygame.image.load(backgroud).convert()
+quitbutton = pygame.image.load(quitbutton).convert()
 click = pygame.mouse.get_pressed()
 
 
@@ -82,7 +86,6 @@ def quit():
     global pressed
     global running
     global click
-    pos = pygame.mouse.get_pos()
     if pygame.mouse.get_pressed()[0] and quitbox.collidepoint(pygame.mouse.get_pos()):
         pygame.display.quit()
         exit()
@@ -121,6 +124,7 @@ async def target_click(pos):
 
 async def init_display():
     screen.fill((0, 0, 0))
+
 
 fps = 300
 clock = pygame.time.Clock()
