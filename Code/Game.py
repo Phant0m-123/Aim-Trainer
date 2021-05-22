@@ -1,141 +1,57 @@
 import asyncio
-import os
 import random
-import sys
-import time
-from functools import cache
+import threading
+
+import arcade
 import keyboard
 
-import pygame
-from pygame import mixer
-
-pygame.init()
-mixer.init()
-x = 0
+s_width = 1280
+s_height = 720
+s_title = "Aim Trainer"
 
 
-# pygame.event.set_allowed([QUIT,KEYDOWN,KEYUP,])
-
-@cache
-def quitmain():
-    global running
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-            running = False
-
-
-pressed = False
-directory = sys.path[0]
-hitsound = os.path.join(directory, "../Assets/hit.mp3")
-cur = os.path.join(directory, "../Assets/cursor.png")
-target = os.path.join(directory, "../Assets/obj.png")
-backgroud = os.path.join(directory, "../Assets/spawn area.png")
-quitbutton = os.path.join(directory, "../Assets/quit.png")
-
-hit = pygame.mixer.Sound(hitsound)
-
-cursor = pygame.image.load(cur)
-
-click = False
-target = pygame.image.load(target)
+cursorx = 0
+cursory = 0
 targetX = random.randint(250, 1616 - 10)
-targetY = random.randint(74, 1080 - 74)
+targetY = random.randint(10, 1080 - 74)
+target = arcade.Sprite("../Assets/obj.png", center_x= targetX, center_y=targetY)
+cursor = arcade.Sprite("../Assets/cursor.png", center_x= 100, center_y=100)
+#collide = arcade.check_for_collision()
 
 
-def player(x, y):
-    screen.blit(target, (x, y))
+def draw_objects():
+    target.draw()
+    cursor.draw()
 
 
-score_value = 0
-font = pygame.font.Font('freesansbold.ttf', 32)
+class gam(arcade.Window):
+    def __init__(self, s_width, s_height, s_title):
+        super().__init__(s_width, s_height, s_title, fullscreen=True, resizable=False, update_rate=1 / 165,
+                         antialiasing=False,visible=True)
+        self.set_mouse_visible(False)
+        arcade.set_background_color(arcade.color.BLACK)
+        self.clicked = False
+
+    def on_draw(self):
+        arcade.start_render()
+        draw_objects()
+    def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
+        cursor.center_x = x
+        cursor.center_y = y
+    def on_update(self, delta_time: float):
+        global target, targetY,targetX
+        global cursor
+        target.update()
+        cursor.update()
+        collide = arcade.check_for_collision(target,cursor)
+        if collide == True and self.clicked == True:
+            target.center_y = random.randint(16, 1080 - 74)
+            target.center_x = random.randint(266, 1616 - 10)
+            self.clicked = False
+    def on_key_release(self, symbol, modifiers):
+        if symbol == arcade.key.Z or symbol == arcade.key.X:
+            self.clicked = True
 
 
-def show_score(x, y):
-    score = font.render("Score : " + str(score_value), True, (255, 255, 255))
-    screen.blit(score, (x, y))
-
-
-textX = 10
-testY = 10
-
-pygame.mouse.set_visible(False)
-screen = pygame.display.set_mode((1920, 1080))
-pygame.display.set_caption("Aim Trainer")
-running = True
-color = (255, 0, 0)
-Rectplace = pygame.image.load(backgroud).convert()
-quitbutton = pygame.image.load(quitbutton).convert()
-click = pygame.mouse.get_pressed()
-
-
-async def objects():
-    global quitbox
-    global hitbox
-    screen.blit(Rectplace, (240, 0))
-    quitbox = pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(1699, 0, 220, 100))
-    screen.blit(quitbutton, (1699, 0))
-    show_score(textX, testY)
-    hitbox = pygame.draw.circle(screen, (0, 0, 0), (targetX + 32, targetY + 32), 32, 1)
-    screen.blit(cursor, (pygame.mouse.get_pos()))
-
-
-def quit():
-    global quitbox
-    global pressed
-    global running
-    global click
-    if pygame.mouse.get_pressed()[0] and quitbox.collidepoint(pygame.mouse.get_pos()):
-        pygame.display.quit()
-        exit()
-
-
-async def randomise_target():
-    global targetX
-    global targetY
-    targetX = random.randint(250, 1616 - 10)
-    targetY = random.randint(10, 1080 - 74)
-
-
-async def play_hitsound():
-    hit.play()
-    time.sleep(0.05)
-    hit.stop()
-
-
-async def target_click(pos):
-    global click
-    global targetX
-    global targetY
-    global score_value
-    global hitbox
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z or event.key == pygame.K_x:
-                if hitbox.collidepoint(pos):
-                    click = True
-        elif hitbox.collidepoint(pos) and click == True:
-            click = False
-            score_value = score_value + 1
-            await randomise_target()
-            await play_hitsound()
-
-
-async def init_display():
-    screen.fill((0, 0, 0))
-
-
-fps = 300
-clock = pygame.time.Clock()
-while running:
-    clock.tick(fps)
-    asyncio.run(init_display())
-    asyncio.run(objects())
-    asyncio.run(target_click(pygame.mouse.get_pos()))
-    player(targetX, targetY)
-    quitmain()
-    quit()
-    pygame.display.flip()
-pygame.QUIT()
-exit()
+gam(s_width, s_height, s_title)
+arcade.run()
