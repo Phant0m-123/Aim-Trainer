@@ -9,13 +9,13 @@ s_width, s_height = arcade.window_commands.get_display_size()
 s_title = "Aim Trainer"
 
 
-image = Image.open("../Assets/quit_screen.png")
+"""image = Image.open("../Assets/quit_screen.png")
 img_final = image.resize((s_width,s_height))
-img_final.save('quitscreen.png')
+img_final.save('quitscreen.png')"""
 cursorx = 0
 cursory = 0
-targetX = random.randint((s_width/4)-26,(s_width/4)*3+26)
-targetY = random.randint(26,s_height-26)
+targetX = int(random.randint((s_width/4)-26,(s_width/4)*3+26))
+targetY = int(random.randint(26,s_height-26))
 target = arcade.Sprite("../Assets/obj.png", center_x= targetX, center_y=targetY)
 cursor = arcade.Sprite("../Assets/cursor.png", center_x= 100, center_y=100)
 quit_button = arcade.Sprite("../Assets/quit.png", center_x=(s_width/8)*7.5, center_y=s_height-50)
@@ -81,6 +81,8 @@ class gam(arcade.Window):
         if self.quit == True:
             if button == arcade.MOUSE_BUTTON_LEFT:
                 quit_press = True
+    #def set_minimum_size(self, width: 1280, height: 720):
+
 
 gam(s_width, s_height, s_title)
 arcade.run()
