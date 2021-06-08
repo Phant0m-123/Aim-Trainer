@@ -1,0 +1,2 @@
+Dont put spaces before or after the = also dont remove the extra =
+fps=300= 

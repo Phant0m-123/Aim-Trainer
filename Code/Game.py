@@ -23,7 +23,8 @@ quit_press = False
 score = 0
 hitsound = arcade.load_sound("../Assets/hit.mp3")
 goodbye = arcade.load_sound("../Assets/goodbye.mp3",True)
-#bye = arcade.Sprite("../Assets/quit_screen.png",center_x=(s_width/2),center_y=(s_height/2))
+bye = arcade.Sprite("../Assets/quit_screen.png",center_x=(s_width/2),center_y=(s_height/2))
+is_bye = False
 
 
 def draw_objects():
@@ -46,9 +47,11 @@ class gam(arcade.Window):
         #self.draw = False
 
     def on_draw(self):
+        global is_bye
         arcade.start_render()
         draw_objects()
-        #asyncio.run(bye(self.draw))
+        if is_bye == True:
+            bye.draw()
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         cursor.center_x = x
         cursor.center_y = y
@@ -66,9 +69,12 @@ class gam(arcade.Window):
             score+=1
         self.quit = arcade.check_for_collision(quit_button,cursor)
         if self.quit == True and quit_press == True:
-            arcade.close_window()
+            time = goodbye.source.duration()
+            bye.update()
             goodbye.play()
-            time.sleep(4.75)
+            time.sleep(time)
+            arcade.finish_render()
+            arcade.close_window()
             exit()
     def on_key_release(self, symbol, modifiers):
         collide = arcade.check_for_collision(target,cursor)
@@ -76,11 +82,13 @@ class gam(arcade.Window):
             if symbol == arcade.key.Z or symbol == arcade.key.X :
                 self.clicked = True
     def on_mouse_press(self, x: float, y: float, button, modifiers: int):
-        global quit_press, quit_button
+        global quit_press, quit_button, is_bye
         self.quit = arcade.check_for_collision(quit_button, cursor)
         if self.quit == True:
-            if button == arcade.MOUSE_BUTTON_LEFT:
+            if button == arcade.MOUSE_BUTTON_LEFT or button == arcade.MOUSE_BUTTON_RIGHT:
+                is_bye = True
                 quit_press = True
+
     #def set_minimum_size(self, width: 1280, height: 720):
 
 
