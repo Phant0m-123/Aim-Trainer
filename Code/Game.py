@@ -1,9 +1,7 @@
-import asyncio
 import os.path
 import random
 import time
 import arcade
-from PIL import Image
 from Assets import path
 
 
