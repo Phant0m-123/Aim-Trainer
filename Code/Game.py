@@ -1,8 +1,10 @@
 import asyncio
+import os.path
 import random
 import time
 import arcade
 from PIL import Image
+from Assets import path
 
 
 s_width, s_height = arcade.window_commands.get_display_size()
@@ -14,23 +16,23 @@ img_final = image.resize((s_width,s_height))
 img_final.save('quitscreen.png')"""
 cursorx = 0
 cursory = 0
-targetX = int(random.randint((s_width/4)-26,(s_width/4)*3+26))
+targetX = int(random.randint((s_width//4)-26,(s_width//4)*3+26))
 targetY = int(random.randint(26,s_height-26))
-target = arcade.Sprite("../Assets/obj.png", center_x= targetX, center_y=targetY)
-cursor = arcade.Sprite("../Assets/cursor.png", center_x= 100, center_y=100)
-quit_button = arcade.Sprite("../Assets/quit.png", center_x=(s_width/8)*7.5, center_y=s_height-50)
+target = arcade.Sprite(os.path.join(path.cwd, "obj.png"), center_x= targetX, center_y=targetY)
+cursor = arcade.Sprite(os.path.join(path.cwd, "cursor.png"), center_x= 100, center_y=100)
+quit_button = arcade.Sprite(os.path.join(path.cwd, "quit.png"), center_x=(s_width//8)*7.5, center_y=s_height-50)
 quit_press = False
 score = 0
-hitsound = arcade.load_sound("../Assets/hit.mp3")
-goodbye = arcade.load_sound("../Assets/goodbye.mp3",True)
-bye = arcade.Sprite("../Assets/quit_screen.png",center_x=(s_width/2),center_y=(s_height/2))
+hitsound = arcade.load_sound(os.path.join(path.cwd, "hit.mp3"))
+goodbye = arcade.load_sound(os.path.join(path.cwd, "goodbye.mp3"),True)
+bye = arcade.Sprite(os.path.join(path.cwd, "quit_screen.png"),center_x=(s_width//2),center_y=(s_height//2))
 is_bye = False
 
 
 def draw_objects():
     quit_button.draw()
     arcade.draw_text(f"Score = {score}",10,s_height-76,arcade.color.RED_ORANGE,38)
-    arcade.draw_rectangle_outline((s_width/2),(s_height/2),((s_width/4)*3),s_height,arcade.color.RED_ORANGE,10)
+    arcade.draw_rectangle_outline((s_width//2),(s_height//2),((s_width//4)*3),s_height,arcade.color.RED_ORANGE,10)
     target.draw()
     cursor.draw()
 #async def bye(a):
@@ -64,15 +66,15 @@ class gam(arcade.Window):
         if collide == True and self.clicked == True:
             hitsound.play()
             target.center_y = random.randint(26,s_height-26)
-            target.center_x = random.randint((s_width/4)-26,(s_width/4)*3+26)
+            target.center_x = random.randint((s_width//4)-26,(s_width//4)*3+26)
             self.clicked = False
             score+=1
         self.quit = arcade.check_for_collision(quit_button,cursor)
         if self.quit == True and quit_press == True:
-            time = goodbye.source.duration()
+            duration = goodbye.source.duration
             bye.update()
             goodbye.play()
-            time.sleep(time)
+            time.sleep(duration)
             arcade.finish_render()
             arcade.close_window()
             exit()
