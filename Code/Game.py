@@ -2,11 +2,12 @@ import os.path
 import random
 import time
 import arcade
-from Assets import path
+from Assets.path import set_cwd
 
 
 s_width, s_height = arcade.window_commands.get_display_size()
 s_title = "Aim Trainer"
+cwd = set_cwd()
 
 
 """image = Image.open("../Assets/quit_screen.png")
@@ -16,14 +17,14 @@ cursorx = 0
 cursory = 0
 targetX = int(random.randint((s_width//4)-26,(s_width//4)*3+26))
 targetY = int(random.randint(26,s_height-26))
-target = arcade.Sprite(os.path.join(path.cwd, "obj.png"), center_x= targetX, center_y=targetY)
-cursor = arcade.Sprite(os.path.join(path.cwd, "cursor.png"), center_x= 100, center_y=100)
-quit_button = arcade.Sprite(os.path.join(path.cwd, "quit.png"), center_x=(s_width//8)*7.5, center_y=s_height-50)
+target = arcade.Sprite(os.path.join(cwd, "obj.png"), center_x= targetX, center_y=targetY)
+cursor = arcade.Sprite(os.path.join(cwd, "cursor.png"), center_x= 100, center_y=100)
+quit_button = arcade.Sprite(os.path.join(cwd, "quit.png"), center_x=(s_width//8)*7.5, center_y=s_height-50)
 quit_press = False
 score = 0
-hitsound = arcade.load_sound(os.path.join(path.cwd, "hit.mp3"))
-goodbye = arcade.load_sound(os.path.join(path.cwd, "goodbye.mp3"),True)
-bye = arcade.Sprite(os.path.join(path.cwd, "quit_screen.png"),center_x=(s_width//2),center_y=(s_height//2))
+hitsound = arcade.load_sound(os.path.join(cwd, "hit.mp3"))
+goodbye = arcade.load_sound(os.path.join(cwd, "goodbye.mp3"),True)
+bye = arcade.Sprite(os.path.join(cwd, "quit_screen.png"),center_x=(s_width//2),center_y=(s_height//2))
 is_bye = False
 
 

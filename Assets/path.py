@@ -1,2 +1,4 @@
 import os
-cwd = os.path.dirname(os.path.abspath(__file__))
+def set_cwd():
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    return cwd
