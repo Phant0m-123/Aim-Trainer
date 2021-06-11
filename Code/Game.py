@@ -2,6 +2,7 @@ import os.path
 import random
 import time
 import arcade
+path = os.getcwd()
 from Assets.path import set_cwd
 
 
