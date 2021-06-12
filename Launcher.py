@@ -2,6 +2,7 @@ import os
 from subprocess import call
 from Assets import path
 
+path = path.set_cwd()
 ph = os.path.join(os.getcwd(), "Code/Game.py")
 
 

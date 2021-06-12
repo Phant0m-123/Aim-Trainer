@@ -2,13 +2,12 @@ import os.path
 import random
 import time
 import arcade
-path = os.getcwd()
-from Assets.path import set_cwd
+import Launcher
 
 
 s_width, s_height = arcade.window_commands.get_display_size()
 s_title = "Aim Trainer"
-cwd = set_cwd()
+cwd = Launcher.path
 
 
 """image = Image.open("../Assets/quit_screen.png")
