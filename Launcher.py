@@ -7,7 +7,9 @@ sys.path.append(os.getcwd())
 from Assets import path
 
 
-path = path.set_cwd()
+def pathh():
+    a = path.set_cwd()
+    return a
 ph = os.path.join(os.getcwd(), "Code/Game.py")
 
 
