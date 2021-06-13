@@ -7,6 +7,7 @@ sys.path.append("/../Launcher.py")
 import Launcher
 
 
+
 s_width, s_height = arcade.window_commands.get_display_size()
 s_title = "Aim Trainer"
 cwd = Launcher.path
