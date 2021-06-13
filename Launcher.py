@@ -1,9 +1,9 @@
 import os
 from subprocess import call
-
-modulename = "path"
-import importlib
-
+path1 = os.getcwd()
+import sys
+sys.path.append(path1)
+from Assets import path
 
 
 path = path.set_cwd()

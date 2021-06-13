@@ -2,11 +2,7 @@ import os.path
 import random
 import time
 import arcade
-path1 = os.getcwd()
-path1 = os.path.join(path1,"Assets")
-import sys
-sys.path.append(path1)
-from Assets import path
+
 
 
 s_width, s_height = arcade.window_commands.get_display_size()
