@@ -2,6 +2,9 @@ import os.path
 import random
 import time
 import arcade
+a = os.path.dirname("/../Launcher.py")
+import sys
+sys.path.append(a)
 from Launcher import pathh
 
 
