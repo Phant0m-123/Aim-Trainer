@@ -2,6 +2,7 @@ import os
 from subprocess import call
 path1 = os.getcwd()
 import sys
+path1 = os.path.join(path1, "Assets")
 sys.path.append(path1)
 sys.path.append(os.getcwd())
 from Assets import path
