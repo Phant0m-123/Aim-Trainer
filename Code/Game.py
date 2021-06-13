@@ -2,6 +2,8 @@ import os.path
 import random
 import time
 import arcade
+import sys
+sys.path.append("/../Launcher.py")
 import Launcher
 
 
