@@ -3,13 +3,13 @@ from subprocess import call
 path1 = os.getcwd()
 import sys
 path1 = os.path.join(path1, "Assets")
-sys.path.append(path1)
-sys.path.append(os.getcwd())
-from Assets import path
+sys.path.insert(1,path1)
+sys.path.insert(1,os.getcwd())
+from Assets import path as p
 
 
-def pathh():
-    a = path.set_cwd()
+def path():
+    a = p.set_cwd()
     return a
 ph = os.path.join(os.getcwd(), "Code/Game.py")
 
